@@ -17,7 +17,7 @@ coming soon
 * custom terminal dimensions as parameters (-w and -h)
 * option to switch between PAL1 and PAL2 at runtime (-1 and -2)
 * use colors/shades of gray on the palette (256 color terminals?)
-* optional text message to be displayed in the middle ([-m <message>])
+* optional text message to be displayed in the middle ([-m &lt;message&gt;])
 * handle terminal resizing gracefully
-* redirect output to another virtual terminal (troll-mode!)
+* redirect output to another terminal (mesmerize your co-workers in troll-mode!)
 

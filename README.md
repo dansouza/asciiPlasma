@@ -21,3 +21,4 @@ coming soon
 * handle terminal resizing gracefully
 * redirect output to another terminal (mesmerize your co-workers in troll-mode!)
 
+**keywords:** linux ascii art animation console ncurses plasma xterm

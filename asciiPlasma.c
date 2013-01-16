@@ -30,15 +30,10 @@ char PAL2[] = " `.!:/;([icILYOPXBMBXPOYLIci[(;/:!.` .:;[cLOXMPLi;!           ";
 #define PALETTE PAL2
 #define PALETTE_LIMIT (sizeof(PALETTE)-2)
 
-double plasma_calc_value(double x, double y, double t);
-
 typedef struct {
 	WINDOW *window;
 	int width;
 	int height;
-	int row;
-	int timeshift;
-	unsigned long framecount;
 	size_t framesize;
 	char *frame;
 } plasma_t;
@@ -59,10 +54,6 @@ now()
 int
 plasma_init(plasma_t *plasma, WINDOW *win, int width, int height)
 {
-	plasma->row = 0;
-	plasma->timeshift = now();
-	plasma->framesize = 0;
-	plasma->framecount = 0;
 	if (width == 0 && height == 0) {
 		if (win) {
 			getmaxyx(win, height, width);
@@ -82,36 +73,24 @@ char *
 plasma_draw(plasma_t *plasma)
 {
 	char *buffer;
-	int y, x, offset = 0, index = 0;
+	int x, y, offset = 0;
 	double v, t;
 
 	t = now();
 	buffer = plasma->frame;
 	for (y = 0; y < plasma->height; y++) {
 		for (x = 0; x < plasma->width; x++) {
-			v = plasma_calc_value(x, y, t);
-			index = round(v * PALETTE_LIMIT);
-			buffer[offset++] = PALETTE[index];
+			v = sin(x*0.15 - t*0.008);
+			v += sin((y-10) * 0.3 * (sin(t/700)-2) + t*0.008);
+			v += sin(sqrt(pow(x/2-10,2) + pow(y-10,2)) * 0.4);
+			v = (v/6) + 0.5;
+
+			buffer[offset++] = PALETTE[(int) round(v * PALETTE_LIMIT)];
 		}
 	}
 	buffer[offset] = 0;
-	plasma->timeshift = t;
-	plasma->framecount++;
 	mvwprintw(plasma->window, 0, 0, "%s", buffer);
 	return plasma->frame;
-}
-
-double
-plasma_calc_value(double x, double y, double t)
-{
-	double _now = now();
-	double retval;
-
-	retval = sin(x*0.15 - t*0.008);
-	retval += sin((y-10) * 0.3 * (sin(t/700)-2) + _now*0.008);
-	retval += sin(sqrt(pow(x/2-10,2) + pow(y-10,2)) * 0.4);
-	retval = (retval/6) + 0.5;
-	return retval;
 }
 
 int

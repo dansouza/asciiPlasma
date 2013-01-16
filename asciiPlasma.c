@@ -113,7 +113,7 @@ main(int argc, char **argv)
 	while (getch() == ERR) {
 		plasma_draw(&Plasma);
 		refresh();
-		usleep(1 * 1000);
+		usleep(18 * 1000);
 	}
 	endwin();
 	exit(EXIT_SUCCESS);
